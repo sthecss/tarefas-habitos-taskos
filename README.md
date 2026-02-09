@@ -5,8 +5,6 @@
 Aqui, produtividade não é cobrança.  
 É **progressão**.
 
-Cada tarefa concluída e cada hábito mantido rende **XP**, constrói *streaks* e faz o usuário **subir de nível**, como em um RPG leve aplicado ao dia a dia.
-
 ---
 
 ## A Ideia por Trás do Projeto
@@ -17,7 +15,7 @@ A proposta é simples:
 > se a vida exige constância, então constância merece recompensa.
 
 Em vez de punições por falhar um dia, o sistema incentiva retomadas, continuidade e senso de avanço.  
-Você não “atrasou tarefas”. Você só está em *grinding*.
+Você não “atrasou tarefas”. Você só está em *grindando*.
 
 ---
 
@@ -106,5 +104,3 @@ http://127.0.0.1:8000
 * Estatísticas avançadas de hábitos
 * Temas visuais desbloqueáveis por nível
 
----
-# tarefas-habitos-taskos
