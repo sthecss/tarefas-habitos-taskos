@@ -69,7 +69,7 @@ Taskos_Tarefas_Habitos/
 ---
 <br>
 
-### Como baixar: 
+## Como baixar: 
 
 <details>
 <summary><strong>Instalação</strong></summary>
@@ -142,7 +142,7 @@ chmod +x run.sh
 ---
 <br>
 
-### Observações
+## Observações
 
 * O servidor utiliza FastAPI + Uvicorn 
 * Os dados são persistidos localmente em arquivos CSV 
@@ -152,7 +152,7 @@ chmod +x run.sh
 ---
 <br>
 
-### Possíveis Evoluções
+## Possíveis Evoluções
 
 - Persistência com banco de dados
 - Sistema de conquistas
