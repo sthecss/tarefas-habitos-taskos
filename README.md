@@ -85,7 +85,7 @@ pip install -r requirements.txt
 3. Inicie o servidor:
 
 ```bash
-python main.py
+
 ```
 
 4. Acesse no navegador:
