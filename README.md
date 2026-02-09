@@ -43,25 +43,44 @@ O projeto foi estruturado seguindo os princípios da **Clean Architecture**, man
 ```text
 Taskos_Tarefas_Habitos/
 │
-├── .venv/
-├── data/
+├── .venv/                      # Ambiente virtual Python
+│
+├── data/                       # Persistência local (CSV e TXT)
 │   ├── caderninho.csv
 │   ├── habitos.csv
 │   ├── lixeira.csv
 │   ├── tarefas.csv
 │   └── usuario.txt
 │
-├── src/
-│   ├── aplicacao/
-│   ├── dominio/
-│   ├── infraestrutura/
-│   └── server.py
+├── src/                        # Código-fonte principal
+│   ├── aplicacao/              # Lógica de aplicação e relatórios
+│   │   ├── __init__.py
+│   │   └── relatorios.py
+│   │
+│   ├── dominio/                # Núcleo do sistema (entidades)
+│   │   ├── __init__.py
+│   │   └── models.py
+│   │
+│   ├── infraestrutura/         # Repositórios e acesso a dados
+│   │   ├── __init__.py
+│   │   ├── repositorio_habitos.py
+│   │   ├── repositorio_tarefas.py
+│   │   └── outros repositórios
+│   │
+│   └── server.py               # Ponto de entrada da aplicação (FastAPI)
 │
-├── static/
-├── templates/
-├── .gitignore
-├── README.md
-└── requirements.txt
+├── static/                     # Arquivos estáticos (frontend)
+│   ├── audio/                  # Efeitos sonoros
+│   ├── css/                    # Estilos visuais
+│   ├── img/                    # Imagens e elementos gráficos
+│   └── js/                     # Scripts JavaScript
+│
+├── templates/                  # Templates HTML (Jinja2)
+│   └── index.html
+│
+├── .gitignore                  # Arquivos ignorados pelo Git
+├── README.md                   # Documentação do projeto
+└── requirements.txt            # Dependências Python
 ````
 
 </details>
