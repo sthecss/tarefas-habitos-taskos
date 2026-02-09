@@ -6,7 +6,9 @@
 
 O projeto foi estruturado seguindo os princípios da **Clean Architecture**, mantendo regras de negócio independentes de framework, interface ou persistência.
 
-Funcionalidades
+<br>
+
+### Funcionalidades
 
     [x] CRUD de Tarefas (A Fazer, Fazendo, Concluído)
 
@@ -19,6 +21,7 @@ Funcionalidades
     [x] Efeitos Sonoros para interações
 
 ---
+<br>
 
 ## Tecnologias
 
@@ -31,66 +34,51 @@ Funcionalidades
 - **Arquitetura:** Clean Architecture
 
 ---
+<br>
 
 ## Estrutura do Projeto
+<details>
+<summary><strong>Checar</strong></summary>
 
 ```text
 Taskos_Tarefas_Habitos/
 │
-├── .venv/                      # Ambiente virtual Python
-│
-├── data/                       # Persistência local (CSV e TXT)
+├── .venv/
+├── data/
 │   ├── caderninho.csv
 │   ├── habitos.csv
 │   ├── lixeira.csv
 │   ├── tarefas.csv
 │   └── usuario.txt
 │
-├── src/                        # Código-fonte principal
-│   ├── aplicacao/              # Lógica de aplicação e relatórios
-│   │   ├── __init__.py
-│   │   └── relatorios.py
-│   │
-│   ├── dominio/                # Núcleo do sistema (entidades)
-│   │   ├── __init__.py
-│   │   └── models.py
-│   │
-│   ├── infraestrutura/         # Repositórios e acesso a dados
-│   │   ├── __init__.py
-│   │   ├── repositorio_habitos.py
-│   │   ├── repositorio_tarefas.py
-│   │   └── outros repositórios
-│   │
-│   └── server.py               # Ponto de entrada da aplicação (FastAPI)
+├── src/
+│   ├── aplicacao/
+│   ├── dominio/
+│   ├── infraestrutura/
+│   └── server.py
 │
-├── static/                     # Arquivos estáticos (frontend)
-│   ├── audio/                  # Efeitos sonoros
-│   ├── css/                    # Estilos visuais
-│   ├── img/                    # Imagens e elementos gráficos
-│   └── js/                     # Scripts JavaScript
-│
-├── templates/                  # Templates HTML (Jinja2)
-│   └── index.html
-│
-├── .gitignore                  # Arquivos ignorados pelo Git
-├── README.md                   # Documentação do projeto
-└── requirements.txt            # Dependências Python
+├── static/
+├── templates/
+├── .gitignore
+├── README.md
+└── requirements.txt
 ````
 
----
-<br><br>
-
-## Instalação (primeira vez)
-
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/sthecss/tarefas-habitos-taskos.git
-cd tarefas-habitos-taskos
-```
+</details>
 
 ---
 <br>
+
+### Como baixar: 
+
+<details>
+<summary><strong>Instalação</strong></summary>
+
+### 1. Clone o repositório
+```bash
+git clone https://github.com/sthecss/tarefas-habitos-taskos.git
+cd tarefas-habitos-taskos
+````
 
 ### 2. Crie o ambiente virtual
 
@@ -98,27 +86,11 @@ cd tarefas-habitos-taskos
 python -m venv .venv
 ```
 
----
-<br>
-
 ### 3. Ative o ambiente virtual
-
-**Linux / macOS**
 
 ```bash
 source .venv/bin/activate
 ```
-
-**Windows**
-
-```bash
-.venv\Scripts\activate
-```
-
-Se aparecer `(.venv)` no terminal, deu certo.
-
----
-<br>
 
 ### 4. Instale as dependências
 
@@ -126,93 +98,65 @@ Se aparecer `(.venv)` no terminal, deu certo.
 pip install -r requirements.txt
 ```
 
----
-<br><br>
+</details>  
 
-## Como rodar o projeto
+<br>
 
-### Primeira execução ou sempre que abrir um novo terminal
+<details>
+<summary><strong>Como rodar</strong></summary>
 
-1. Entre na pasta do projeto
+Primeira execução ou sempre que abrir um novo terminal
 
 ```bash
 cd tarefas-habitos-taskos
-```
-
-2. Ative o ambiente virtual
-
-```bash
 source .venv/bin/activate
-```
-
-3. Inicie o servidor
-
-```bash
 python -m src.server
-```
+````
 
----
-<br>
-
-### Acesse no navegador
+Acesse:
 
 ```
 http://127.0.0.1:8000
 ```
 
----
-<br><br>
+</details>
 
-## Dica para rodar mais rápido (opcional)
+<br>
 
-Crie um script para automatizar:
-
-### `run.sh` (Linux / macOS)
+<details>
+<summary><strong>Dica para rodar mais rápido (run.sh)</strong></summary>
 
 ```bash
 #!/bin/bash
 source .venv/bin/activate
 python -m src.server
-```
-
-<br>
-Dê permissão:
+````
 
 ```bash
 chmod +x run.sh
-```
-
-Depois disso, basta rodar:
-
-```bash
 ./run.sh
 ```
 
+</details>
+
 ---
-<br><br>
+<br>
 
-## Observações
+### Observações
 
-* O servidor utiliza **FastAPI + Uvicorn**
-* Os dados são persistidos localmente em arquivos CSV
-* A aplicação não depende de banco de dados externo
+* O servidor utiliza FastAPI + Uvicorn 
+* Os dados são persistidos localmente em arquivos CSV 
+* A aplicação não depende de banco de dados externo 
 * Ideal para estudo de arquitetura e projetos modulares em Python
 
 ---
-<br><br>
+<br>
 
-## Possíveis Evoluções
+### Possíveis Evoluções
 
-* Persistência com banco de dados
-* Sistema de conquistas
-* Perfis de usuário
-* Estatísticas avançadas
-* Temas visuais desbloqueáveis
-
----
-<br><br>
-
-````
-  Desenvolvido por Sthe.
-````
+- Persistência com banco de dados
+- Sistema de conquistas
+- Perfis de usuário
+- Estatísticas avançadas
+- Temas visuais desbloqueáveis
 
