@@ -1,0 +1,402 @@
+/* ==================== paleta de Cores */
+:root {
+    --bg-creme: #FFF8F0;        /* Fundo da página */
+    --caramelo-escuro: #B87E45; /* Header e destaques */
+    --caramelo-medio: #D9A066;  /* Cards principais */
+    --caramelo-claro: #EED8C0;  /* Inputs e fundos secundários */
+    --texto-marrom: #5D4037;    /* Texto principal */
+    --texto-claro: #FFF8F0;     /* Texto claro */
+    --borda-destaque: #8D5B2B;
+    --vermelho-perigo: #ef4444;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-image: url('/static/img/fundo.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+
+    color: var(--texto-marrom);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* ==================== gird em 3 colunas */
+.bento-container {
+    display: grid;
+    /* Coluna esq (280px), Meio (Flexível), Coluna dir (280px) */
+    grid-template-columns: 280px 1fr 280px;
+
+    /* Linha 1: Altura do User | Linha 2: O resto (Histórico) */
+    grid-template-rows: max-content auto;
+
+    gap: 20px;
+    max-width: 1400px;
+    width: 100%;
+    height: 90vh; /* Altura fixa da tela */
+
+    /* DESENHO DO GRID */
+    grid-template-areas:
+        "user      tarefas habitos"
+        "historico tarefas habitos";
+
+    background: rgba(255, 248, 240, 0.9);
+    padding: 25px;
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+/* mapeamento das áreas */
+.area-user      { grid-area: user; }
+.area-historico { grid-area: historico; overflow: hidden; }
+.area-tarefas   { grid-area: tarefas; overflow: hidden; }
+.area-habitos   { grid-area: habitos; overflow: hidden; }
+
+
+/* ==================== colunas laterais */
+.fixed-height-panel {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;       /* isso daqui evita que extrapole */
+}
+
+.scrollable-content {
+    flex-grow: 1;
+    overflow-y: auto;       /* scrol na listinha */
+    padding-right: 5px;
+    margin-bottom: 10px;
+}
+
+
+/* ==================== scrollbar personalizada */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+::-webkit-scrollbar-thumb { background: rgba(184, 126, 69, 0.5); border-radius: 3px; }
+
+
+/* ==================== card do usuario */
+.user-vertical-card {
+    background: linear-gradient(135deg, var(--caramelo-escuro) 0%, #8D5B2B 100%);
+    border-radius: 20px;
+    position: relative;
+    padding: 20px;
+    color: var(--texto-claro);
+    box-shadow: 0 8px 16px rgba(184, 126, 69, 0.3);
+    border: 2px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+}
+
+/* ==================== habitos */
+.area-habitos {
+    grid-area: habitos;
+    display: flex;
+    flex-direction: column;
+    height: 100%;       /* Ocupa a altura total da grid */
+    overflow: hidden;   /* Impede que o card estique o layout */
+    box-sizing: border-box;
+}
+
+/* Campo de nome ocupando a linha toda */
+.area-habitos .form-novo-habito input[name="nome"] {
+    flex: 1 1 100%; /* Força 100% de largura */
+    margin-bottom: 4px;
+}
+
+/* Campos menores dividindo a linha de baixo */
+.area-habitos .form-novo-habito select,
+.area-habitos .form-novo-habito input[name="xp"] {
+    flex: 1;
+}
+
+/* Botão de + do formulário */
+.area-habitos .form-novo-habito .btn-action {
+    flex: 0 0 50px;
+}
+
+/* ==================== icon redondo com bordinha */
+.uv-photo-wrapper {
+    padding: 6px;
+    background: linear-gradient(45deg, #d4af37, #8d5b2b, #d4af37);
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.uv-photo {
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.2);
+    display: block;
+    object-fit: cover;
+    background: #333;
+}
+
+.level-badge {
+    background: var(--texto-claro);
+    color: var(--caramelo-escuro);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.8em;
+    margin-top: -15px;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.xp-bar-container {
+    width: 100%; height: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px; overflow: hidden;
+}
+.xp-bar-fill { height: 100%; background: #4ade80; width: 0%; transition: width 0.5s; }
+
+.uv-stats-row {
+    display: flex; justify-content: space-around; width: 100%;
+    background: rgba(0,0,0,0.15); padding: 10px; border-radius: 10px;
+}
+.uv-stat b { font-size: 1.2em; display:block; }
+.uv-stat span { font-size: 0.7em; opacity: 0.8; text-transform: uppercase; }
+
+
+/* ==================== card de input */
+.input-card {
+    background-color: var(--caramelo-medio);
+    border-radius: 20px;
+    padding: 20px;
+    color: var(--texto-marrom);
+    box-shadow: 0 4px 10px rgba(217, 160, 102, 0.2);
+}
+.input-card h3 { margin-top: 0; color: var(--texto-claro); font-size: 1.1em; }
+
+/* ==================== habit */
+.habit-dropdown {
+    display: none;
+    position: fixed;
+    background: white !important; /* Força o fundo branco */
+    border: 1px solid var(--caramelo-claro);
+    border-radius: 12px;
+    min-width: 140px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* ==================== tarefas */
+.task-grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1; /* Ocupa o espaço central */
+    overflow-y: auto;
+    padding: 5px;
+}
+
+.task-card {
+    background: #fff;
+    border-left: 6px solid var(--caramelo-escuro);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+}
+.task-card:hover { transform: translateX(3px); }
+
+.tc-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.tc-title { font-weight: 700; font-size: 1.1em; color: var(--texto-marrom); }
+.tc-date {
+    font-size: 0.75em; background: var(--caramelo-claro);
+    padding: 3px 8px; border-radius: 6px; color: var(--texto-marrom);
+}
+.tc-desc {
+    font-size: 0.9em; color: #666; margin: 0;
+    line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.tc-actions {
+    display: flex; justify-content: flex-end; gap: 10px;
+    margin-top: 5px; padding-top: 8px;
+    border-top: 1px solid #eee;
+}
+
+
+/* ==================== lista simples */
+.lista-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;       /* Empurra o formulário de novo hábito para baixo */
+    overflow-y: auto;   /* Habilita o scroll real */
+    min-height: 0;      /* Importante para o flexbox permitir encolhimento */
+}
+.item-row {
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 10px; border-radius: 8px; margin-bottom: 6px;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--texto-claro); font-size: 0.9em;
+}
+
+
+/* ==================== itens llixeira */
+.lixeira-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px; background: rgba(255,255,255,0.4);
+    border-radius: 8px; margin-bottom: 5px; color: var(--texto-marrom);
+}
+
+
+/* ==================== card de histórico */
+.historico-card {
+    background: white; padding: 10px; border-radius: 8px;
+    margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85em; border: 1px solid var(--caramelo-claro);
+}
+
+
+/* ==================== botoes e inputs :D */
+input[type="text"], input[type="date"] {
+    padding: 10px; border-radius: 8px; border: none;
+    background: var(--caramelo-claro); color: var(--texto-marrom);
+    font-weight: 600; width: 100%;
+}
+input::placeholder { color: #8D5B2B; opacity: 0.7; }
+
+button.btn-action {
+    background: var(--borda-destaque); color: white; border: none;
+    padding: 0 15px; border-radius: 8px; cursor: pointer; font-weight: bold;
+}
+
+.btn-check {
+    background: none; border: 2px solid var(--texto-claro); color: var(--texto-claro);
+    border-radius: 50%; width: 26px; height: 26px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+.btn-delete { background: none; border: none; color: #ffcccb; cursor: pointer; font-size: 1.2em; }
+.btn-delete:hover { color: #ff6b6b; }
+.btn-restore { background:none; border:1px solid #5D4037; color:#5D4037; border-radius:4px; cursor:pointer; font-size:0.8em; }
+
+
+/* ==================== paginação beleza */
+.mini-pag {
+    margin-top: auto;
+    background: rgba(0,0,0,0.05);
+    padding: 8px; border-radius: 8px;
+    display: flex; justify-content: center; gap: 15px;
+    font-size: 0.8em; color: var(--texto-marrom);
+}
+.mini-pag a { text-decoration: none; color: var(--texto-marrom); font-weight: bold; }
+
+/* Modal */
+dialog {
+    border: none; border-radius: 15px; padding: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    background: var(--bg-creme); width: 400px;
+}
+
+/* ==================== rolagem de texto */
+.tc-desc-scroll {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 5px;
+    line-height: 1.4;
+
+    max-height: 80px;   /* altura máxima do texto */
+    overflow-y: auto;   /* rola se passar disso */
+
+    padding-right: 5px;
+}
+
+.tc-desc-scroll::-webkit-scrollbar { width: 4px; }
+.tc-desc-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+/* ==================== badge de xp */
+.xp-badge {
+    font-size: 0.7em;
+    padding: 3px 10px;
+    border-radius: 12px; /* Borda redondinha */
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.xp-tag-task {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.xp-tag-habit {
+    background-color: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+/* ==================== generalizacao de formulario */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+textarea,
+select {
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background: var(--caramelo-claro);
+    color: var(--texto-marrom);
+    font-weight: 600;
+    width: 100%;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--caramelo-medio);
+    box-shadow: 0 4px 10px rgba(217, 160, 102, 0.15);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.75em;
+    font-weight: 800;
+    color: var(--caramelo-escuro);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* ==================== tags de Frequência */
+.badge-freq {
+    font-size: 0.65em;
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid transparent;
+}
+.tipo-Diário, .tipo-Diario, .tipo-diario { background-color: #d1fae5; color: #065f46; border-color: #34d399; }
+.tipo-Semanal, .tipo-semanal { background-color: #dbeafe; color: #1e40af; border-color: #60a5fa; }
+.tipo-Mensal, .tipo-mensal { background-color: #f3e8ff; color: #6b21a8; border-color: #c084fc; }

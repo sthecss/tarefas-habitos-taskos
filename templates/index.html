@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Taskos - XP Edition</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+
+    <script>
+        function abrirEditor(id, titulo, desc, data, xp) {
+            document.getElementById('edit_id').value = id;
+            document.getElementById('edit_titulo').value = titulo;
+            document.getElementById('edit_descricao').value = desc;
+            document.getElementById('edit_data').value = data;
+            document.getElementById('edit_xp').value = xp || 50;
+            document.getElementById('modalEditar').showModal();
+        }
+
+        function abrirEditorHabito(id, nome, xp, tipo) {
+            document.getElementById('hab_id').value = id;
+            document.getElementById('hab_nome').value = nome;
+            document.getElementById('hab_xp').value = xp || 10;
+
+            if(document.getElementById('hab_tipo')) {
+                document.getElementById('hab_tipo').value = tipo || "Diário";
+            }
+
+            document.getElementById('modalEditarHabito').showModal();
+        }
+
+        function toggleHabitMenu(event, btn) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const menu = btn.nextElementSibling;
+            const isVisible = menu.style.display === 'block';
+
+            document.querySelectorAll('.habit-dropdown').forEach(d => d.style.display = 'none');
+
+            if (!isVisible) {
+                menu.style.display = 'block';
+                const rect = btn.getBoundingClientRect();
+                menu.style.position = 'fixed';
+                menu.style.top = rect.bottom + 'px';
+                menu.style.left = (rect.left - 120) + 'px';
+                menu.style.zIndex = '9999';
+            }
+        }
+
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.habit-dropdown').forEach(d => d.style.display = 'none');
+        });
+    </script>
+</head>
+
+<body>
+
+    <dialog id="modalEditar" style="border:none; border-radius:20px; padding:25px; box-shadow:0 15px 40px rgba(93, 64, 55, 0.2); width:400px; background:var(--bg-creme);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 style="margin:0; color:var(--texto-marrom); display:flex; align-items:center; gap:8px;">
+                <span style="color: var(--caramelo-escuro); font-size: 1.2em;">✍︎</span>
+                <span>Editar Tarefa</span>
+            </h3>
+        </div>
+        <form action="/tarefa/editar" method="post" style="display:flex; flex-direction:column; gap:15px;">
+            <input type="hidden" id="edit_id" name="id_tarefa">
+            <div>
+                <label class="form-label">Título da Tarefa</label>
+                <input type="text" id="edit_titulo" name="titulo" required placeholder="Ex: Comprar pão">
+            </div>
+            <div>
+                <label class="form-label">Detalhes</label>
+                <textarea id="edit_descricao" name="descricao" rows="3" placeholder="Descrição opcional..."></textarea>
+            </div>
+            <div style="display:flex; gap:15px;">
+                <div style="flex: 2;"> <label class="form-label">Data Limite</label>
+                    <input type="date" id="edit_data" name="data_limite" required>
+                </div>
+                <div style="flex: 1;"> <label class="form-label">XP Reward</label>
+                    <div style="position:relative;">
+                        <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); opacity:0.5; font-size:0.8em;">⚡</span>
+                        <input type="number" id="edit_xp" name="xp" min="1" max="500" required style="padding-left:30px; text-align:center;">
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px; padding-top:15px; border-top:1px dashed rgba(0,0,0,0.1);">
+                <button type="button" onclick="document.getElementById('modalEditar').close()" style="background:none; border:none; padding:10px 20px; color:#888; cursor:pointer; font-weight:600;">Cancelar</button>
+                <button type="submit" class="btn-action" style="box-shadow: 0 4px 10px rgba(184, 126, 69, 0.4);">Salvar Alterações</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="modalEditarHabito" style="border:none; border-radius:15px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); width:350px; background:var(--bg-creme);">
+        <h3 style="margin-top:0; color:var(--texto-marrom);">✎ᝰ Editar Hábito</h3>
+        <form action="/habito/editar" method="post" style="display:flex; flex-direction:column; gap:10px;">
+            <input type="hidden" id="hab_id" name="id_habito">
+            <label style="font-size:0.8em; font-weight:bold;">Nome do Hábito</label>
+            <input type="text" id="hab_nome" name="nome" required>
+            <label style="font-size:0.8em; font-weight:bold;">Tipo</label>
+            <select id="hab_tipo" name="tipo" style="padding: 8px; border-radius: 8px;">
+                <option value="Diário">Diário</option>
+                <option value="Semanal">Semanal</option>
+                <option value="Mensal">Mensal</option>
+            </select>
+            <label style="font-size:0.8em; font-weight:bold;">XP por execução</label>
+            <input type="number" id="hab_xp" name="xp" min="1" max="100" required>
+            <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+                <button type="button" onclick="document.getElementById('modalEditarHabito').close()" style="background:none; border:1px solid #aaa; padding:8px 15px; border-radius:8px; cursor:pointer;">Cancelar</button>
+                <button type="submit" class="btn-action">Salvar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="modalCaderninho">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="margin:0; color:var(--caramelo-escuro);">Arquivo</h3>
+            <button onclick="document.getElementById('modalCaderninho').close()" style="border:none; background:none; cursor:pointer;">✕</button>
+        </div>
+        <ul class="lista-items" style="max-height:300px; overflow-y:auto;">
+            {% for item in caderninho %}
+            <li class="item-row" style="background:white; border:1px solid #ddd; color:#555;">
+                <span>{{ item.nome }} <small>({{ item.contador_execucoes }}x)</small></span>
+                <form action="/habito/restaurar/{{ item.id }}" method="post"><button class="btn-check" style="color:#555; border-color:#555;">♻</button></form>
+            </li>
+            {% endfor %}
+        </ul>
+    </dialog>
+
+    <dialog id="modalLixeira" style="border:none; border-radius:15px; padding:20px; box-shadow:0 20px 50px rgba(0,0,0,0.3); width:350px; background:var(--bg-creme);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <h3 style="margin:0; color:var(--texto-marrom);">Lixeira</h3>
+            <div style="display:flex; gap:10px;">
+                <form action="/lixeira/limpar" method="post" onsubmit="return confirm('Esvaziar tudo permanentemente?');">
+                    <button title="Esvaziar Tudo" style="background:none; border:none; color:#e74c3c; cursor:pointer; font-weight:bold;">Esvaziar</button>
+                </form>
+                <button onclick="document.getElementById('modalLixeira').close()" style="border:none; background:none; cursor:pointer; font-size:1.2em;">✕</button>
+            </div>
+        </div>
+        <div style="max-height:300px; overflow-y:auto;">
+            {% for item in lixeira %}
+            <div class="lixeira-item" style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid rgba(0,0,0,0.05);">
+                <span style="font-size:0.9em;">{{ item.dados_extra.split('|')[0] }}</span>
+                <form action="/lixeira/restaurar/{{ loop.index0 }}/1" method="post"><button class="btn-restore">♻</button></form>
+            </div>
+            {% else %}
+                <p style="text-align:center; opacity:0.5; font-size:0.9em;">Lixeira vazia</p>
+            {% endfor %}
+        </div>
+    </dialog>
+
+
+    <div class="bento-container">
+
+        <div class="area-user user-vertical-card">
+             <form action="/sistema/resetar" method="post" onsubmit="return confirm('ATENÇÃO: Resetar tudo?');" style="position:absolute; top:15px; right:15px;">
+                <button style="background:none; border:none; color:rgba(255,255,255,0.5); cursor:pointer;" title="Resetar Sistema">⚙</button>
+             </form>
+             <div class="uv-photo-wrapper"><img src="https://cataas.com/cat?width=200&height=200" class="uv-photo"></div>
+             <span id="current-level" class="level-badge">LVL {{ stats.nivel }}</span>
+             <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:10px; width: 100%;">
+                 <h2 style="margin:0;">{{ usuario }}</h2>
+                 <form action="/usuario/alterar" method="post" style="display:flex;">
+                      <input type="text" name="nome" placeholder="✎" style="width:30px; padding:2px 4px; background:rgba(255,255,255,0.2); color:var(--texto-claro); border:1px solid rgba(255,255,255,0.3); border-radius:4px; text-align:center; font-size:0.8em; outline:none;">
+                 </form>
+             </div>
+             <div class="xp-bar-container" style="margin-top:10px;"><div class="xp-bar-fill" style="width: {{ stats.progresso }}%;"></div></div>
+             <div class="uv-stats-row"><div class="uv-stat"><b>{{ stats.tarefas_concluidas }}</b><span>Tasks</span></div><div class="uv-stat"><b>{{ stats.habitos_ativos }}</b><span>Habits</span></div></div>
+        </div>
+
+        <div class="historico-section area-historico fixed-height-panel" style="background:var(--caramelo-claro); margin:0; padding:15px; border-radius:20px; display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="margin:0;">Histórico</h3>
+                <button onclick="document.getElementById('modalLixeira').showModal()"
+                        style="background:rgba(255,255,255,0.5); border:none; border-radius:8px; width:30px; height:30px; cursor:pointer; font-size:1.1em; display:flex; align-items:center; justify-content:center;"
+                        title="Abrir Lixeira">
+                    🗑
+                </button>
+            </div>
+            <div class="scrollable-content" style="flex-grow:1; overflow-y:auto; padding-right:5px;">
+                {% for t in historico %}
+                <div class="historico-card" style="background:white; padding:10px; border-radius:8px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:0.85em;">
+                    <div>
+                        <strong>{{ t.titulo }}</strong><br>
+                        <small style="opacity:0.7;">{{ t.data_limite }} (+{{ t.xp }}XP)</small>
+                    </div>
+                    <form action="/tarefa/excluir/{{ t.id }}" method="post"><button class="btn-delete" style="color:#8D5B2B;">×</button></form>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="input-card area-tarefas" style="padding:0; background:none; box-shadow:none; overflow:hidden;">
+            <div style="background:var(--caramelo-medio); padding:15px; border-radius:20px 20px 0 0; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; color:var(--texto-claro);">Quadro de Tarefas</h3>
+                <form action="/tarefa/nova" method="post" style="display:flex; gap:5px;">
+                    <input type="text" name="titulo" placeholder="Nova tarefa..." required style="width:240px; padding:5px;">
+                    <input type="date" name="data_limite" required style="width:160px; padding:5px;">
+                    <input type="number" name="xp" value="50" min="1" max="500" style="width:80px; padding:5px;" title="XP">
+                    <button class="btn-action">+</button>
+                </form>
+            </div>
+
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; height:100%; background:rgba(255,255,255,0.3); padding:10px; border-radius: 0 0 20px 20px;">
+
+                <div style="display:flex; flex-direction:column; background: rgba(255,255,255,0.7); border-radius: 15px; padding: 10px;">
+                    <h4 style="margin:0 0 10px 0; color:#5D4037; opacity:0.7; text-align:center;">A Fazer</h4>
+                    <div class="task-grid-container">
+                        {% for t in pendentes %}
+                        <div class="task-card">
+                            <div class="tc-header">
+                                <span class="tc-title">{{ t.titulo }}</span>
+                                <button onclick="abrirEditor('{{ t.id }}', '{{ t.titulo }}', '{{ t.descricao|replace('\n', ' ') }}', '{{ t.data_limite }}', '{{ t.xp }}')" style="border:none; background:none; cursor:pointer;">✍︎</button>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                                <span class="tc-date">🕰 {{ t.data_limite }}</span>
+                                <span class="xp-badge xp-tag-task">⊹₊⟡⋆ {{ t.xp }} XP</span>
+                            </div>
+                            <div class="tc-desc-scroll">{{ t.descricao }}</div>
+                            <div class="tc-actions" style="justify-content:space-between;">
+                                <form action="/tarefa/excluir/{{ t.id }}" method="post" onsubmit="return confirm('Excluir?');"><button class="btn-delete">🗑</button></form>
+                                <form action="/tarefa/mover/{{ t.id }}/progresso" method="post"><button class="btn-action" style="padding:2px 8px; font-size:0.8em;">▶ Iniciar</button></form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; background: rgba(255,240,240,0.7); border-radius: 15px; padding: 10px;">
+                    <h4 style="margin:0 0 10px 0; color:#B87E45; font-weight:bold; text-align:center;">Em Progresso</h4>
+                    <div class="task-grid-container">
+                        {% for t in fazendo %}
+                        <div class="task-card" style="border-left-color:#ef4444; background:#fff8f8;">
+                            <div class="tc-header">
+                                <span class="tc-title">{{ t.titulo }}</span>
+                                <button onclick="abrirEditor('{{ t.id }}', '{{ t.titulo }}', '{{ t.descricao|replace('\n', ' ') }}', '{{ t.data_limite }}', '{{ t.xp }}')" style="border:none; background:none; cursor:pointer;">✎ᝰ</button>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:5px;">
+                                <span class="tc-date" style="background:#ffe0e0;">🕰 {{ t.data_limite }}</span>
+                                <span class="xp-badge xp-tag-task">⊹₊⟡⋆ {{ t.xp }} XP</span>
+                            </div>
+                            <div class="tc-desc-scroll">{{ t.descricao }}</div>
+                            <div class="tc-actions" style="justify-content:space-between;">
+                                <form action="/tarefa/mover/{{ t.id }}/pendente" method="post"><button style="background:none; border:none; cursor:pointer; opacity:0.6;">↩ Voltar</button></form>
+                                <form action="/tarefa/mover/{{ t.id }}/concluida" method="post"><button class="btn-check" style="width:auto; padding:0 10px; border-radius:5px; color:#5D4037; border-color:#5D4037;">✓ Feito</button></form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-card area-habitos" style="display: flex; flex-direction: column; height: 100%; box-sizing: border-box;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; flex-shrink: 0;">
+                <h3 style="margin:0;">Hábitos</h3>
+                <button onclick="document.getElementById('modalCaderninho').showModal()"
+                        style="background: var(--caramelo-escuro); color: white; border: none; padding: 8px 15px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                    <span>Arquivo</span>
+                </button>
+            </div>
+
+            <div style="flex-grow: 1; min-height: 0; overflow-y: auto; margin-bottom: 15px; padding-right: 5px;">
+                <ul style="list-style: none; padding: 0; margin: 0; width: 100%;">
+                    {% for h in habitos %}
+                    <li class="item-row" style="background: rgba(255,255,255,0.2); margin-bottom: 10px; padding: 12px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; flex-direction: column; gap: 4px; align-items: flex-start;">
+                            <strong style="font-size: 1em; line-height: 1.2;">{{ h.nome }}</strong>
+                            <span class="badge-freq tipo-{{ h.frequencia if h.frequencia else 'Diário' }}">
+                                {{ h.frequencia if h.frequencia else 'Diário' }}
+                            </span>
+                            <div style="display: flex; align-items: center; gap: 8px; margin-top: 2px;">
+                                <small style="opacity:0.8; font-size: 0.75em;">{{ h.contador_execucoes }}x streak</small>
+                                <span class="xp-badge xp-tag-habit" style="font-size: 0.65em;">⚡ {{ h.xp }}</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <form action="/habito/check/{{ h.id }}" method="post">
+                                <button class="btn-check" style="background: white; color: var(--caramelo-escuro); border: none; width: 34px; height: 34px; border-radius: 50%; font-weight: bold; cursor: pointer; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">✓</button>
+                            </form>
+                            <div style="position: relative; display: flex; align-items: center;">
+                                <button onclick="toggleHabitMenu(event, this)" style="background:none; border:none; color:white; cursor:pointer; font-size: 1.4em; padding: 0 5px; line-height: 1;">⋮</button>
+                                <div class="habit-dropdown">
+                                     <button onclick="abrirEditorHabito('{{ h.id }}', '{{ h.nome }}', '{{ h.xp }}', '{{ h.tipo }}')" style="width:100%; padding:12px; border:none; background:none; text-align:left; cursor:pointer; color: var(--texto-marrom); display:flex; gap:8px;"><span>✍︎</span> Editar</button>
+                                     <form action="/habito/arquivar/{{ h.id }}" method="post" style="margin:0;"><button class="btn-delete" data-sound="snd-swap.mp3" style="width:100%; padding:12px; border:none; background:none; text-align:left; cursor:pointer; color: var(--texto-marrom); border-top: 1px solid #eee; display:flex; gap:8px;"><span>🗐</span> Arquivar</button></form>
+                                     <form action="/habito/excluir/{{ h.id }}" method="post" style="margin:0;"><button style="width:100%; padding:12px; border:none; background:none; text-align:left; cursor:pointer; color: #e74c3c; border-top: 1px solid #eee; display:flex; gap:8px;"><span>✕</span> Excluir</button></form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <form action="/habito/novo" method="post" style="display: flex; flex-direction: column; gap: 8px; background: rgba(0,0,0,0.05); padding: 12px; border-radius: 18px; flex-shrink: 0;">
+                <input type="text" name="nome" placeholder="Nome do hábito..." required style="width: 100%; box-sizing: border-box; padding: 10px; border-radius: 10px; border: none;">
+                <div style="display: flex; gap: 8px;">
+                    <select name="tipo" style="flex-grow: 1; padding: 8px; border-radius: 10px; border: none; background: var(--caramelo-claro);">
+                        <option value="Diário">Diário</option>
+                        <option value="Semanal">Semanal</option>
+                        <option value="Mensal">Mensal</option>
+                    </select>
+                    <input type="number" name="xp" value="10" style="width: 55px; padding: 8px; border-radius: 10px; border: none; background: var(--caramelo-claro); text-align: center;">
+                    <button class="btn-action" style="width: 45px; height: 38px; border-radius: 10px;">+</button>
+                </div>
+            </form>
+        </div>
+
+    </div> <script src="/static/js/main.js"></script>
+
+</body>
+</html>
