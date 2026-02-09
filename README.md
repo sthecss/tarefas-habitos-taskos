@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Taskos
 
 O **Taskos** é um gerenciador de tarefas e hábitos gamificado, desenvolvido para transformar a produtividade diária em uma experiência de RPG. O sistema recompensa o usuário com **XP** ao concluir tarefas e manter sequências (*streaks*) de hábitos, permitindo a progressão de níveis.
@@ -61,3 +62,6 @@ python main.py
 No seu GitHub, você pode ir em **Settings -> Pages** e, se estiver usando um serviço como o Render ou Railway para o backend, apontar o seu **Domínio Próprio** lá no painel deles. Isso vai passar uma imagem muito profissional!
 
 **Quer que eu te ajude a escrever a seção de "Ideia de Desenvolvimento" (o porquê você decidiu criar um RPG de tarefas) para dar um toque mais pessoal ao projeto?**
+=======
+# tarefas-habitos-taskos
+>>>>>>> 3a7f2d1434d52f6bf37d93a7fba248c8613f54a9
